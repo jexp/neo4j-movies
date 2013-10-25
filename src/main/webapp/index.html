@@ -1,0 +1,62 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+    <title>Neo4j Movies</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse" role="navigation">
+    <a class="navbar-brand" href="#">Neo4j Movies</a>
+
+    <div class="navbar-header">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Search</a></li>
+            <li><a href="viz.html">Viz</a></li>
+        </ul>
+        <form id="search" class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input type="text" name="search" class="form-control" placeholder="Search for Movie Title">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">Search Results</div>
+            <table id="results" class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Cast</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#search").submit(function () {
+            $.get("/search?q=" + encodeURIComponent($("#search").find("input[name=search]").val()),
+                    function (data) {
+                        var t = $("table#results tbody").empty();
+                        data.forEach(function (row) {
+                            t.append($("<tr><td>" + row.movie.title + "</td><td>" + row.movie.cast + "</td></tr>"))
+                        })
+                    }, "json");
+            return false;
+        })
+    })
+</script>
+</html>
