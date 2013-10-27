@@ -10,6 +10,9 @@ import org.neo4j.rest.graphdb.RestAPI;
 import org.neo4j.rest.graphdb.RestAPIFacade;
 import org.neo4j.rest.graphdb.query.RestCypherQueryEngine;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 
 import static org.neo4j.helpers.collection.MapUtil.map;
@@ -27,9 +30,20 @@ public class MovieService {
     }
 
     private CypherExecutor createCypherExecutor(String uri) {
-//        return new JdbcCypherExecutor(uri);
-        return new JavaLiteCypherExecutor(uri);
+        URL url = null;
+        try {
+            url = new URL(uri);
+            String auth = url.getUserInfo();
+            if (auth != null) {
+                String[] parts = auth.split(":");
+                return new JdbcCypherExecutor(uri, parts[0], parts[1]);
+            }
+            return new JdbcCypherExecutor(uri);
+//        return new JavaLiteCypherExecutor(uri);
 //        return new RestApiCypherExecutor(uri);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid Neo4j-ServerURL " + uri);
+        }
     }
 
     public Map findMovie(String id) {

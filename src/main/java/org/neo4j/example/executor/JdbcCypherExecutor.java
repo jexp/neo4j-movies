@@ -11,8 +11,11 @@ public class JdbcCypherExecutor implements CypherExecutor {
     private final Connection conn;
 
     public JdbcCypherExecutor(String url) {
+        this(url,null,null);
+    }
+    public JdbcCypherExecutor(String url,String username, String password) {
         try {
-            conn = DriverManager.getConnection(url.replace("http://","jdbc:neo4j://"));
+            conn = DriverManager.getConnection(url.replace("http://","jdbc:neo4j://"),username,password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
