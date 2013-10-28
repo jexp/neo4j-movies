@@ -36,11 +36,11 @@ public class MovieService {
             String auth = url.getUserInfo();
             if (auth != null) {
                 String[] parts = auth.split(":");
-                return new JdbcCypherExecutor(uri, parts[0], parts[1]);
+                return new RestApiCypherExecutor(uri, parts[0], parts[1]);
             }
-            return new JdbcCypherExecutor(uri);
+//            return new JdbcCypherExecutor(uri);
 //        return new JavaLiteCypherExecutor(uri);
-//        return new RestApiCypherExecutor(uri);
+        return new RestApiCypherExecutor(uri);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid Neo4j-ServerURL " + uri);
         }

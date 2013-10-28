@@ -15,6 +15,9 @@ public class RestApiCypherExecutor implements CypherExecutor {
 
     private final RestAPI restAPI;
 
+    public RestApiCypherExecutor(String url, String user, String password) {
+        restAPI = new RestAPIFacade(url+"/db/data/", user, password);
+    }
     public RestApiCypherExecutor(String url) {
         restAPI = new RestAPIFacade(url+"/db/data/");
     }
