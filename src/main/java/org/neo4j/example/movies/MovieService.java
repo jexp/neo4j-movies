@@ -38,9 +38,9 @@ public class MovieService {
                 String[] parts = auth.split(":");
                 return new RestApiCypherExecutor(uri, parts[0], parts[1]);
             }
-//            return new JdbcCypherExecutor(uri);
+            return new JdbcCypherExecutor(uri);
 //        return new JavaLiteCypherExecutor(uri);
-        return new RestApiCypherExecutor(uri);
+//        return new RestApiCypherExecutor(uri);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Invalid Neo4j-ServerURL " + uri);
         }
@@ -50,10 +50,10 @@ public class MovieService {
         if (id==null) return Collections.emptyMap();
         return IteratorUtil.singleOrNull(cypher.query(
                 "MATCH (movie:Movie)<-[:ACTED_IN]-(actor)\n" +
-                        " WHERE movie.id = {id}\n" +
+                        " WHERE movie.id = {1}\n" +
                         " WITH movie, collect(actor.name) as cast\n" +
                         " RETURN { title: movie.title, cast: cast} as movie",
-                map("id", id)));
+                map("1", id)));
     }
 
     @SuppressWarnings("unchecked")
@@ -61,10 +61,10 @@ public class MovieService {
         if (query==null || query.trim().isEmpty()) return Collections.emptyList();
         return IteratorUtil.asCollection(cypher.query(
                 "MATCH (movie:Movie)<-[:ACTED_IN]-(actor)\n" +
-                    " WHERE movie.title =~ {query}\n" +
+                    " WHERE movie.title =~ {1}\n" +
                     " WITH movie, collect(actor.name) as cast\n" +
                     " RETURN { id: movie.id, title: movie.title, cast: cast} as movie",
-                map("query", "(?i).*"+query+".*")));
+                map("1", "(?i).*"+query+".*")));
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class MovieService {
         Iterator<Map<String,Object>> result = cypher.query(
                 "MATCH (m:Movie)<-[:ACTED_IN]-(a:Actor) " +
                 " RETURN m.title as movie, collect(a.name) as cast " +
-                " LIMIT {limit}", map("limit",limit));
+                " LIMIT {1}", map("1",limit));
         List nodes = new ArrayList();
         List rels= new ArrayList();
         int i=0;

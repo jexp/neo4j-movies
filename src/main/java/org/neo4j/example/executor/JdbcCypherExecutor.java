@@ -45,7 +45,7 @@ public class JdbcCypherExecutor implements CypherExecutor {
                     ResultSetMetaData metaData = result.getMetaData();
                     int count = metaData.getColumnCount();
                     List<String> cols = new ArrayList<>(count);
-                    for (int i = 1; i <= count; i++) cols.add(metaData.getCatalogName(i));
+                    for (int i = 1; i <= count; i++) cols.add(metaData.getColumnName(i));
                     return columns = cols;
                 }
 

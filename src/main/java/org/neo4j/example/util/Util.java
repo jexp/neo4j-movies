@@ -81,7 +81,7 @@ public class Util {
     }
 
     public static String getNeo4jUrl() {
-        String urlVar = System.getenv("NEO4J_URL");
+        String urlVar = System.getenv("NEO4J_URL¡");
         if (urlVar==null) urlVar = "NEO4J_REST_URL";
         String url =  System.getenv(urlVar);
         if(url == null || url.isEmpty()) {
