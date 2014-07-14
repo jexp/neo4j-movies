@@ -70,7 +70,7 @@ public class MovieService {
     @SuppressWarnings("unchecked")
     public Map<String, Object> graph(int limit) {
         Iterator<Map<String,Object>> result = cypher.query(
-                "MATCH (m:Movie)<-[:ACTED_IN]-(a:Actor) " +
+                "MATCH (m:Movie)<-[:ACTED_IN]-(a:Person) " +
                 " RETURN m.title as movie, collect(a.name) as cast " +
                 " LIMIT {1}", map("1",limit));
         List nodes = new ArrayList();
